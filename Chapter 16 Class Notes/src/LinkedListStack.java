@@ -15,6 +15,31 @@ public class LinkedListStack
         first = null;
     }
 
+    public boolean empty()
+    {
+        return first == null;
+    }
+
+    public Object push(Object element)
+    {
+        Node newNode = new Node();
+        newNode.data = element;
+        newNode.next = first;
+        first = newNode;
+        return element;
+    }
+
+    public Object pop()
+    {
+        if(this.empty())
+        {
+            throw new NoSuchElementException();
+        }
+        Object temp = first.data;
+        first = first.next;
+        return temp;
+    }
+
     /**
      * Adds an element to the top of the stack.
      *

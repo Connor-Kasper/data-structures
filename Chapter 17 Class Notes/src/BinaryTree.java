@@ -10,7 +10,8 @@ public class BinaryTree
     */
     public BinaryTree()
     {
-         
+        this.root = new Node();
+        this.root.data = null;
     } 
 
     /**
@@ -19,7 +20,10 @@ public class BinaryTree
     */
     public BinaryTree(Object rootData) 
     {
-        
+        this.root = new Node();
+        this.root.data = rootData;
+        this.root.left = null;
+        this.root.right = null;
     }
 
     /**
@@ -30,12 +34,16 @@ public class BinaryTree
     */
     public BinaryTree(Object rootData, BinaryTree left, BinaryTree right)
     {
-        
+        this(rootData);
+        this.root.left = left.root;
+        this.root.right = right.root;
     }
     
     static class Node
     {
-        
+        public Object data;
+        public Node left;
+        public Node right;
     }
 
     /**
@@ -45,7 +53,11 @@ public class BinaryTree
     */
     private static int height(Node n)
     {
-        return 0;
+        if(n == null)
+            return 0;
+        else 
+            return Math.max(BinaryTree.height(n.left), BinaryTree.height(n.right)) + 1;
+        
     }
 
     /**
@@ -54,7 +66,7 @@ public class BinaryTree
     */
     public int height()
     {
-        return 0;
+        return BinaryTree.height(this.root);
     }
 
     /**
@@ -81,7 +93,9 @@ public class BinaryTree
     */
     public BinaryTree left() 
     { 
-        return null;
+        BinaryTree subtree = new BinaryTree();
+        subtree.root = this.root.left;
+        return subtree;
     }
 
     /**
@@ -90,6 +104,27 @@ public class BinaryTree
     */
     public BinaryTree right() 
     { 
-        return null;
+        BinaryTree subtree = new BinaryTree();
+        subtree.root = this.root.right;
+        return subtree;
     }
+
+    public int countNodesWith1Child(Node node) 
+    {
+        if((node.right == null && node.left != null) || (node.right != null && node.left == null) )
+        {
+            return 1 + countNodesWith1Child(node.left) + countNodesWith1Child(node.right);
+        }
+        if(node.left == null && node.right == null)
+        {
+            return 0;
+        }
+        return countNodesWith1Child(node.left) + countNodesWith1Child(node.right);
+    }
+    
+    public int countNodesWith1Child() 
+    {
+        return countNodesWith1Child(this.root);
+    }
+    
 }
