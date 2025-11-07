@@ -41,7 +41,7 @@ public class Tree
     /**
         Adds a subtree as the last child of the root.
     */
-    public void addSubtree(Tree subtree)
+    public void addSubtree(TreeGurt subtree)
     {
         this.root.children.add(subtree.root);
     }
@@ -73,4 +73,75 @@ public class Tree
     }
 
     // Additional methods will be added in later sections.
+    // A visitor method is called for each visited node during a tree traversal.
+
+    public interface Visitor
+    {
+        /*
+         * The visit method is called for each visited node.
+         * @param data: The data of the node being visited.
+         */
+        void visit(Object data);
+    }
+
+    /*
+     * Traverse this tree in pre-order.
+     * @param v: visitor to be invoked on each node.
+     */
+    private void preorder(Visitor v) 
+    {
+          TreeGurt.preorder(this.root, v);
+    }
+
+    public ArrayList<Object> depthFirstList()
+    {
+        ArrayList<Object> depthFirstObjectList = new ArrayList<>();
+        ArrayList<Node> rootNodeList = new ArrayList<>();
+        rootNodeList.add(this.root);
+        depthFirstObjectList.add(this.root.data);
+        depthFirstList(rootNodeList, depthFirstObjectList);
+        return depthFirstObjectList;
+        
+    }
+
+    private void depthFirstList(ArrayList<Node> nodes, ArrayList<Object> dfList)
+    {
+        ArrayList<Node> childNodeList = new ArrayList<>();
+
+        if(nodes.isEmpty()) 
+        {
+            return;
+        }
+
+        for(Node n : nodes) 
+        {
+            for(Node child : n.children) 
+            {
+                dfList.add(child.data);
+                childNodeList.add(child);
+            }
+        }
+        depthFirstList(childNodeList, dfList);
+        return;
+    }
+
+
+     /*
+      * Traverse the tree with a given root in preorder.
+      * @param n: the root of the tree to traverse.
+      * @param v: the visitor to be invoked on each node.
+      */
+    public static void preorder(Node n, Visitor v) 
+    {
+        if( n == null ) 
+        {
+           return;
+        }
+        v.visit(n.data);
+
+        for(Node child : n.children) 
+        {
+            TreeGurt.preorder(child, v);
+        }
+    }
 }

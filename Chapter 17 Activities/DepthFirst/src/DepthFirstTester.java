@@ -7,18 +7,18 @@ public class DepthFirstTester
 {
     public static void main(String[] args)
     {
-        Tree t1 = new Tree("Anne");
-        Tree t2 = new Tree("Peter");
+        TreeGurt t1 = new TreeGurt("Anne");
+        TreeGurt t2 = new TreeGurt("Peter");
         t1.addSubtree(t2);
-        Tree t3 = new Tree("Zara");
+        TreeGurt t3 = new TreeGurt("Zara");
         t1.addSubtree(t3);
-        Tree t4 = new Tree("Sonia");
+        TreeGurt t4 = new TreeGurt("Sonia");
         t2.addSubtree(t4);
-        Tree t5 = new Tree("Mike");
+        TreeGurt t5 = new TreeGurt("Mike");
         t2.addSubtree(t5);
-        Tree t6 = new Tree("Sam");
+        TreeGurt t6 = new TreeGurt("Sam");
         t2.addSubtree(t6);
-        Tree t7 = new Tree("Jane");
+        TreeGurt t7 = new TreeGurt("Jane");
         t5.addSubtree(t7);
 
         // Use a lambda (Section 10.4) for the visitor
@@ -28,8 +28,8 @@ public class DepthFirstTester
             return true;
         };
 
-        t1.depthFirst(visitor);
-        System.out.println();
+        
+        System.out.println(t1.postorder());
         System.out.println("Expected: Anne Peter Sonia Mike Jane Sam Zara");
 
     }

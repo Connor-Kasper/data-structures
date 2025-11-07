@@ -21,7 +21,16 @@ public class BinarySearchTree
     */
     public void add(Comparable obj) 
     {   
-        
+        Node newNode = new Node();
+        newNode.data = obj;
+        newNode.left = null;
+        newNode.right = null;
+        if(this.root == null) 
+        {
+            this.root = newNode;
+            return;
+        }
+        this.root.addNode(newNode);
     }
 
     /**
@@ -31,6 +40,22 @@ public class BinarySearchTree
     */
     public boolean find(Comparable obj)
     {
+        Node current = this.root;
+        while(current != null) 
+        {
+            if(current.data.compareTo(obj) == 0) 
+            {
+                return true;
+            } 
+            else if(current.data.compareTo(obj) < 0) 
+            {
+                current = current.left;
+            } 
+            else 
+            {
+                current = current.right;
+            }
+        }
         return false;
     }
     
@@ -41,7 +66,72 @@ public class BinarySearchTree
     */
     public void remove(Comparable obj)
     {
-        
+        Node toBeRemoved = this.root;
+        boolean found = false;
+        Node parent = null;
+
+        while(toBeRemoved != null && !found) 
+        {
+            if(toBeRemoved.data.compareTo(obj) == 0) 
+            {
+                found = true;
+            } 
+            else if(toBeRemoved.data.compareTo(obj) < 0) 
+            {
+                parent = toBeRemoved;
+                toBeRemoved = toBeRemoved.left;
+            } 
+            else 
+            {
+                parent = toBeRemoved;
+                toBeRemoved = toBeRemoved.right;
+            }
+
+            if(!found) 
+            {
+                return;
+            }
+            //Case 1 and Case 2 (Atleast one child is null)
+            if(toBeRemoved.left == null || toBeRemoved.right == null) 
+            {
+                Node newChild;
+                if(toBeRemoved.left == null) 
+                {
+                    newChild = toBeRemoved.right;
+                } 
+                else 
+                {
+                    newChild = toBeRemoved.left;
+                }
+                if(parent == null) 
+                {
+                    this.root = newChild;
+                } 
+                else
+                {
+                    parent.right = newChild;
+                } 
+                return;
+            } 
+            //Case 3 (Both children are non-null)
+
+            Node leastParent = toBeRemoved;
+            Node least = toBeRemoved.right;
+            while(least.left != null) 
+            {
+                leastParent = least;
+                least = least.left;
+            }
+            toBeRemoved.data = least.data;
+            if(leastParent == toBeRemoved) 
+            {
+                leastParent.right = least.right;
+            } 
+            else 
+            {
+                leastParent.left = least.right;
+            }
+        } 
     }
     
     /**
@@ -49,7 +139,8 @@ public class BinarySearchTree
     */
     public void print()
     {   
-        
+        print (this.root);
+        System.out.println();
     }   
 
     /**
@@ -59,6 +150,12 @@ public class BinarySearchTree
     private static void print(Node parent)
     {   
         
+        if(parent != null) 
+        {
+            print(parent.left);
+            System.out.print(parent.data + " ");
+            print(parent.right);
+        }
     }
 
     /**
@@ -67,7 +164,9 @@ public class BinarySearchTree
     */
     static class Node
     {   
-        
+        public Node left;
+        public Node right;
+        public Comparable<Object> data;
 
         /**
             Inserts a new node as a descendant of this node.
@@ -75,7 +174,25 @@ public class BinarySearchTree
         */
         public void addNode(Node newNode)
         {   
-            
+            if(this.data.compareTo(newNode.data) < 0) 
+            {
+                if(this.left == null) 
+                {
+                    this.left = newNode;
+                } else 
+                {
+                    this.left.addNode(newNode);
+                }
+            } else if(this.data.compareTo(newNode.data) > 0)
+            {
+                if(this.right == null) 
+                {
+                    this.right = newNode;
+                } else 
+                {
+                    this.right.addNode(newNode);
+                }
+            }
         }
     }
 }
